@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentNames currentFragment;
     FloatingActionButton mFab;
     public static Context mContext;
-    long now = System.currentTimeMillis();//현재시간을~
-    Date mDate = new Date(now);//~구한다
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         initToolBar();
         initFab();
         mContext = this.getApplicationContext();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        
     }
 
     private void initFab() {
@@ -105,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 uri = data.getData();
                 Intent intent = new Intent(MainActivity.this, TextReaderActivity.class);
                 intent.setData(uri);
+                long now = System.currentTimeMillis();//현재시간을~
+                Date mDate = new Date(now);//~구한다
                 SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간구한다
                 String getTime = simpleDate.format(mDate);
                 RecentList.recentList.add(new TextFileInfo(uri,getTime));//최근파일리스트에 파일을 등록
