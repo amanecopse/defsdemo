@@ -10,6 +10,7 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,22 +18,32 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.textservice.TextInfo;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_TEXT_FILE = 1;
     DrawerLayout mDrawerLayout;
-    enum FragmentNames {TEXTFILES,VOCANOTES};
+    enum FragmentNames {TEXTFILES,VOCANOTES};//Fab에게 어느 프래그먼트인지 알려줌
     FragmentNames currentFragment;
     FloatingActionButton mFab;
+    public static Context mContext;
+    long now = System.currentTimeMillis();//현재시간을~
+    Date mDate = new Date(now);//~구한다
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         initDrawer();
         initToolBar();
         initFab();
+        mContext = this.getApplicationContext();
     }
 
     private void initFab() {
@@ -64,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void onTextfilesFabClicked() {
 
-        openFile();
+        openFilePicker();
     }
 
-    private void openFile() {
+    private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
@@ -93,6 +105,11 @@ public class MainActivity extends AppCompatActivity {
                 uri = data.getData();
                 Intent intent = new Intent(MainActivity.this, TextReaderActivity.class);
                 intent.setData(uri);
+                SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간구한다
+                String getTime = simpleDate.format(mDate);
+                RecentList.recentList.add(new TextFileInfo(uri,getTime));//최근파일리스트에 파일을 등록
+                //TextfilesRecyclerViewAdapter.o
+                Log.d("main",RecentList.recentList.get(RecentList.recentList.size()-1).textFileName);
                 startActivity(intent);
             }
         }
@@ -150,3 +167,4 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
