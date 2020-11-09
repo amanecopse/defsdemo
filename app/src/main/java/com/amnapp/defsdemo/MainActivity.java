@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import java.util.Iterator;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_TEXT_FILE = 1;
+    private static final String TAG = "mainAT";
     DrawerLayout mDrawerLayout;
     enum FragmentNames {TEXTFILES,VOCANOTES};//Fab에게 어느 프래그먼트인지 알려줌
     FragmentNames currentFragment;
@@ -52,13 +54,17 @@ public class MainActivity extends AppCompatActivity {
         initToolBar();
         initFab();
         mContext = this.getApplicationContext();
+        loadFileListGson();
+
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        
+    private void loadFileListGson() {
+        Log.d(TAG, "loadGson");
+        GsonObjectSaveManager recentGson = new GsonObjectSaveManager();
+        ArrayList obj = recentGson.loadObject("recentList");
+        if(obj != null){
+            RecentList.setArrayList(obj);
+        }
     }
 
     private void initFab() {
@@ -81,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onTextfilesFabClicked() {
-
         openFilePicker();
     }
 
@@ -116,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//시간구한다
                 String getTime = simpleDate.format(mDate);
                 RecentList.recentList.add(new TextFileInfo(uri,getTime));//최근파일리스트에 파일을 등록
-                //TextfilesRecyclerViewAdapter.o
                 Log.d("main",RecentList.recentList.get(RecentList.recentList.size()-1).textFileName);
                 startActivity(intent);
             }
@@ -173,6 +177,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
 
+        GsonObjectSaveManager recentGson = new GsonObjectSaveManager();
+        recentGson.saveObject(RecentList.getArrayList(), "recentList");
+        Log.d(TAG, "saveGson");
+
+    }
 }
+
+
 

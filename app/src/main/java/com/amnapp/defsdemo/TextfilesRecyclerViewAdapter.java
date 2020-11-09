@@ -73,7 +73,7 @@ public class TextfilesRecyclerViewAdapter extends RecyclerView.Adapter<Textfiles
                     if (pos != RecyclerView.NO_POSITION) {
                         // 데이터 리스트로부터 아이템 데이터 참조.
                         TextFileInfo item = RecentList.recentList.get(pos) ;
-                        Uri uri = item.uri;
+                        Uri uri = Uri.parse(item.uriStr);
                         Intent intent = new Intent(MainActivity.mContext, TextReaderActivity.class);
                         intent.setData(uri);
                         long now = System.currentTimeMillis();//현재시간을~

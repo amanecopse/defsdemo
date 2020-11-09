@@ -4,15 +4,19 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.OpenableColumns;
 
-public class TextFileInfo {//생성자로 uri과 시간을 받아 저장한다. uri은 파일이름을 추출하여 이름을 따로 저장.
+import java.util.jar.Pack200;
+
+public class TextFileInfo{//생성자로 uri과 시간을 받아 저장한다. uri은 파일이름을 추출하여 이름을 따로 저장.
     public String textFileName;
     public String readTime;
-    public Uri uri;
+    public String uriStr;
 
     public TextFileInfo(Uri textFileUri, String readTime) {
-        this.uri = textFileUri;
+        this.uriStr = textFileUri.toString();
         this.textFileName = getFileName(textFileUri);
         this.readTime = readTime;
     }
@@ -37,4 +41,5 @@ public class TextFileInfo {//생성자로 uri과 시간을 받아 저장한다. 
         }
         return result;
     }
+
 }
