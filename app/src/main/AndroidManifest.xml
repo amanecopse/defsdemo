@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.amnapp.defsdemo">
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,17 +10,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".EditVocanotesActivity"
+            android:label="@string/title_activity_edit_vocanotes">
+        </activity>
         <activity android:name=".TextReaderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data  android:scheme="file"/>
-                <data  android:scheme="content"/>
-                <data  android:mimeType="text/html"/>
-                <data  android:mimeType="text/plain"/>
-                <data  android:mimeType="text/xml"/>
-                <data  android:mimeType="application/xhtml+xml"/>
-                <data  android:mimeType="application/vnd.wap.xhtml+xml"/>
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/xml" />
+                <data android:mimeType="application/xhtml+xml" />
+                <data android:mimeType="application/vnd.wap.xhtml+xml" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">

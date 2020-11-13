@@ -8,12 +8,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,10 +41,12 @@ import java.util.Iterator;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_TEXT_FILE = 1;
+    private static final int EDIT_VOCANOTES = 2;
     private static final String TAG = "mainAT";
     DrawerLayout mDrawerLayout;
     enum FragmentNames {TEXTFILES,VOCANOTES};//Fab에게 어느 프래그먼트인지 알려줌
-    FragmentNames currentFragment;
+    FragmentNames currentFragment;//현재 프래그먼트가 어느것인지 fab에게 알려줌
+    Fragment mFragment = new TextfilesFragment();//현재 프래그먼트
     FloatingActionButton mFab;
     public static Context mContext;
 
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setFragmentView();
         initDrawer();
         initToolBar();
         initFab();
@@ -74,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch(currentFragment){
+                switch(currentFragment){//initDrawer에서 item을 뭘로 눌렀냐에 따라 결정됨
                     case TEXTFILES:
                         onTextfilesFabClicked();
                         break;
                     case VOCANOTES:
+                        Intent intent = new Intent(MainActivity.this, EditVocanotesActivity.class);
+                        startActivity(intent);
                         break;
                 }
             }
@@ -127,7 +135,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    private void setFragmentView(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();//이하의 commit까지의 코드는 프래그먼트 전환을 위한 코드임
+        fragmentTransaction.replace(R.id.fragment_container, mFragment);
+        fragmentTransaction.commit();
+    }
     private void initDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView mNavigationView = findViewById(R.id.navi_view);
@@ -143,14 +155,18 @@ public class MainActivity extends AppCompatActivity {
 
                 if(id == R.id.textfiles){
                     currentFragment = FragmentNames.TEXTFILES;
-                    Toast.makeText(getApplicationContext(), title + ": 계정 정보를 확인합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), title + ": 읽을 텍스트를 추가하거나 읽은 목록에서 선택", Toast.LENGTH_SHORT).show();
+                    mFragment = new TextfilesFragment();
+                    setFragmentView();
                 }
                 else if(id == R.id.vocanotes){
                     currentFragment = FragmentNames.VOCANOTES;
-                    Toast.makeText(getApplicationContext(), title + ": 설정 정보를 확인합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), title + ": 사전을 추가 또는 편집하거나 열람", Toast.LENGTH_SHORT).show();
+                    mFragment = new VocanotesFragment();//단어장 목록 db에서 불러올때 인텐트를 인자로 보낼것
+                    setFragmentView();
                 }
                 else if(id == R.id.settings){
-                    Toast.makeText(getApplicationContext(), title + ": 로그아웃 시도중", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), title + ": 환경설정 변경", Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
@@ -165,9 +181,11 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false); // 기존 title 지우기
         actionBar.setDisplayHomeAsUpEnabled(true); // 햄버거 버튼 만들기
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
+        actionBar.setElevation(100);
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {//툴바의 햄버거 버튼이 눌릴 때
         switch (item.getItemId()){
             case android.R.id.home:{ // 햄버거 눌림
                 mDrawerLayout.openDrawer(GravityCompat.START);
@@ -182,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         GsonObjectSaveManager recentGson = new GsonObjectSaveManager();
-        recentGson.saveObject(RecentList.getArrayList(), "recentList");
+        recentGson.saveObject(RecentList.getArrayList(), "recentList");//텍스트파일리스트를 영구저장
         Log.d(TAG, "saveGson");
 
     }
