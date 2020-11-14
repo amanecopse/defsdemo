@@ -17,13 +17,15 @@ public class VocanotesRecyclerViewAdapter extends RecyclerView.Adapter<Vocanotes
 
 
     public static final String TAG = "VocanotesRVAdapter";
-    public static ArrayList<VocanotesInfo> vocaList = new ArrayList<>();
+    //public static ArrayList<VocanotesInfo> vocaList = new ArrayList<>();
+    public static ArrayList<VocanotesEntity> vocaList = new ArrayList<>();
+
 
     public VocanotesRecyclerViewAdapter() {
         Log.d(TAG,"AD constructor");
     }
 
-    public VocanotesRecyclerViewAdapter(ArrayList<VocanotesInfo> vocaList) {
+    public VocanotesRecyclerViewAdapter(ArrayList<VocanotesEntity> vocaList) {
         Log.d(TAG,"AD constructor");
         this.vocaList = vocaList;
     }
@@ -55,7 +57,7 @@ public class VocanotesRecyclerViewAdapter extends RecyclerView.Adapter<Vocanotes
         public final View mView;
         public final TextView mHeadView;
         public final TextView mMeaningView;
-        public VocanotesInfo mItem;
+        public VocanotesEntity mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

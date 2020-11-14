@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class VocanotesFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     public static final String TAG = "VocanotesFragment";
-    private int mColumnCount = 1;
     RecyclerView mRecyclerView;
     VocanotesRecyclerViewAdapter mVocanotesRecyclerViewAdapter;
 
@@ -24,22 +23,10 @@ public class VocanotesFragment extends Fragment {
     public VocanotesFragment() {
     }
 
-    public static VocanotesFragment newInstance(int columnCount) {
-        VocanotesFragment fragment = new VocanotesFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate");
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -52,11 +39,7 @@ public class VocanotesFragment extends Fragment {
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.VocanotesListView);
-        if (mColumnCount <= 1) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mVocanotesRecyclerViewAdapter = new VocanotesRecyclerViewAdapter();//db에 존재하면 그 값을 생성자 인자로 전해줄 것.
         mRecyclerView.setAdapter(mVocanotesRecyclerViewAdapter);
         return view;

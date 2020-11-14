@@ -46,8 +46,10 @@ public class EditVocanotesActivity extends AppCompatActivity {
                 meaning=mMeaning.getText().toString();
                 exampleSentence=mExampleSentence.getText().toString();
                 otherMemo=mOtherMemo.getText().toString();
-                VocanotesInfo vocanotesInfo = new VocanotesInfo(headWord, relatedWord, meaning, exampleSentence, otherMemo);
-                VocanotesRecyclerViewAdapter.vocaList.add(vocanotesInfo);
+                VocanotesEntity vocanotesEntity = new VocanotesEntity(headWord, relatedWord, meaning, exampleSentence, otherMemo);//UI에 적힌 값으로 새로운 객체생성
+                VocanotesRecyclerViewAdapter.vocaList.add(0,vocanotesEntity);// 새 객체를 어댑터 속 리스트에 추가
+                MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.InsertVocanotes, vocanotesEntity);// DB에도 추가
+                new Thread(dbt).start();//DB에 추가하는 스레드 실행
                 finish();
             }
         });

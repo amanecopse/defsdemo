@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,7 +63,48 @@ public class MainActivity extends AppCompatActivity {
         initFab();
         mContext = this.getApplicationContext();
         loadFileListGson();
+        loadVocanotes();
 
+
+    }
+
+    public static class DBThread implements Runnable {//DB관련 작업처리 스레드, 생성자가 받은 커맨드에 따라 다른 행동을 한다.
+        String command;
+        public static final String LoadVocanotes = "LoadVocanotes";
+        public static final String InsertVocanotes = "InsertVocanotes";
+        VocanotesEntity mVocanotesEntity;
+
+        public DBThread(String command) {
+            this.command = command;
+        }
+
+        public DBThread(String command, VocanotesEntity vocanotesEntity) {
+            this.command = command;
+            this.mVocanotesEntity = vocanotesEntity;
+        }
+
+        @Override
+        public void run() {
+            if(command.equals("LoadVocanotes")){
+                AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
+                List vocaList = db.vocanotesDao().loadAllVocanotes();
+                if(vocaList!=null){
+                    VocanotesRecyclerViewAdapter.vocaList = (ArrayList<VocanotesEntity>) vocaList;
+                }
+            }
+            if(command.equals("InsertVocanotes")){
+                AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
+                if(VocanotesRecyclerViewAdapter.vocaList!=null){
+                    db.vocanotesDao().insert(mVocanotesEntity);
+                }
+            }
+
+        }
+    }
+
+    private void loadVocanotes() {
+        DBThread dbt = new DBThread("LoadVocanotes");
+        new Thread(dbt).start();
     }
 
     private void loadFileListGson() {
@@ -202,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
         GsonObjectSaveManager recentGson = new GsonObjectSaveManager();
         recentGson.saveObject(RecentList.getArrayList(), "recentList");//텍스트파일리스트를 영구저장
         Log.d(TAG, "saveGson");
-
     }
 }
 
