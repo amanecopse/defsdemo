@@ -42,8 +42,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PICK_TEXT_FILE = 1;
-    private static final int EDIT_VOCANOTES = 2;
+    static final int PICK_TEXT_FILE = 1;
+    static final int EDIT_VOCANOTES = 2;
     private static final String TAG = "mainAT";
     DrawerLayout mDrawerLayout;
     enum FragmentNames {TEXTFILES,VOCANOTES};//Fab에게 어느 프래그먼트인지 알려줌
@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         String command;
         public static final String LoadVocanotes = "LoadVocanotes";
         public static final String InsertVocanotes = "InsertVocanotes";
+        public static final String UpdateVocanotes = "UpdateVocanotes";
+        public static final String DeleteVocanotes = "DeleteVocanotes";
         VocanotesEntity mVocanotesEntity;
 
         public DBThread(String command) {
@@ -85,17 +87,29 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            if(command.equals("LoadVocanotes")){
+            if(command.equals("LoadVocanotes")){//앱이 기동될 때 DB로부터 불러온 VocanotesEntity객체의 리스트를 보카 어댑터에 전달한다
                 AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
                 List vocaList = db.vocanotesDao().loadAllVocanotes();
                 if(vocaList!=null){
                     VocanotesRecyclerViewAdapter.vocaList = (ArrayList<VocanotesEntity>) vocaList;
                 }
             }
-            if(command.equals("InsertVocanotes")){
+            if(command.equals("InsertVocanotes")){//받은 VocanotesEntity객체를 DB에 추가하는 작업
                 AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
                 if(VocanotesRecyclerViewAdapter.vocaList!=null){
                     db.vocanotesDao().insert(mVocanotesEntity);
+                }
+            }
+            if(command.equals("UpdateVocanotes")){//받은 VocanotesEntity객체를 DB에 업데이트하는 작업
+                AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
+                if(VocanotesRecyclerViewAdapter.vocaList!=null){
+                    db.vocanotesDao().update(mVocanotesEntity);
+                }
+            }
+            if(command.equals("DeleteVocanotes")){//받은 VocanotesEntity객체를 DB에서 삭제하는 작업
+                AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
+                if(VocanotesRecyclerViewAdapter.vocaList!=null){
+                    db.vocanotesDao().delete(mVocanotesEntity);
                 }
             }
 

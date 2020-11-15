@@ -23,7 +23,7 @@
                 android:layout_margin="10dp"
                 android:text="text"
                 android:textIsSelectable="true"
-                android:textSize="@dimen/text_size" />
+                android:textSize="@dimen/text_size_large" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

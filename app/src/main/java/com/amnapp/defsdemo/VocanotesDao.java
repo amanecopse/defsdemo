@@ -24,6 +24,7 @@ public interface VocanotesDao {
 
     @Update
     void update(VocanotesEntity vocanotes);
+
     @Query("SELECT * FROM vocanotes ORDER BY _id DESC")
     List<VocanotesEntity> loadAllVocanotes();
 

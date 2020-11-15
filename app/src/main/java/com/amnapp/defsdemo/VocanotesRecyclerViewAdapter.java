@@ -1,6 +1,5 @@
 package com.amnapp.defsdemo;
 
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +10,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 public class VocanotesRecyclerViewAdapter extends RecyclerView.Adapter<VocanotesRecyclerViewAdapter.ViewHolder> {
 
 
     public static final String TAG = "VocanotesRVAdapter";
-    //public static ArrayList<VocanotesInfo> vocaList = new ArrayList<>();
     public static ArrayList<VocanotesEntity> vocaList = new ArrayList<>();
+    private OnEditClickListener mEditListener = null ;
+    private OnDeleteClickListener mDeleteListener = null ;
+    private OnContentClickListener mContentListener = null ;
+    public interface OnEditClickListener {
+        void onEditClick(View v, int position) ;
+    }
+    public interface OnDeleteClickListener {
+        void onDeleteClick(View v, int position) ;
+    }
+    public interface OnContentClickListener {
+        void onContentClick(View v, int position) ;
+    }
+    public void setOnEditClickListener(OnEditClickListener listener) {
+        this.mEditListener = listener ;
+    }
+    public void setOnDeleteClickListener(OnDeleteClickListener listener) {
+        this.mDeleteListener = listener ;
+    }
+    public void setOnContentClickListener(OnContentClickListener listener) {
+        this.mContentListener = listener ;
+    }
 
 
     public VocanotesRecyclerViewAdapter() {
@@ -66,18 +83,43 @@ public class VocanotesRecyclerViewAdapter extends RecyclerView.Adapter<Vocanotes
             mView = itemView;
             mHeadView = (TextView) itemView.findViewById(R.id.item_head);
             mMeaningView = (TextView) itemView.findViewById(R.id.item_meaning);
-            itemView.setOnClickListener(new View.OnClickListener() {
+
+            View vcEdit = itemView.findViewById(R.id.viEdit);
+            vcEdit.setOnClickListener(new View.OnClickListener() {//Edit 버튼에 터치 이벤트 설정
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG,"item onClicked");
+                    Log.d(TAG,"Edit onClicked");
                     int pos = getAdapterPosition() ;//어댑터에서의 포지션을 가져오는 함수
-                    if (pos != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(MainActivity.mContext, EditVocanotesActivity.class);
-                        intent.putExtra("infoIndex",pos);//단어장이 있는 ArrayList의 인덱스를 넘김
-                        MainActivity.mContext.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
+                    if (pos != RecyclerView.NO_POSITION&&mEditListener!=null) {
+                        mEditListener.onEditClick(v, pos);
                     }
                 }
             });
+
+            View vcDelete = itemView.findViewById(R.id.viDelete);
+            vcDelete.setOnClickListener(new View.OnClickListener() {//Content에 터치 이벤트 설정
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG,"Delete onClicked");
+                    int pos = getAdapterPosition() ;//어댑터에서의 포지션을 가져오는 함수
+                    if (pos != RecyclerView.NO_POSITION&&mDeleteListener!=null) {
+                        mDeleteListener.onDeleteClick(v, pos);
+                    }
+                }
+            });
+
+            View vcContent = itemView.findViewById(R.id.viContentCardView);
+            vcContent.setOnClickListener(new View.OnClickListener() {//Content에 터치 이벤트 설정
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG,"Content onClicked");
+                    int pos = getAdapterPosition() ;//어댑터에서의 포지션을 가져오는 함수
+                    if (pos != RecyclerView.NO_POSITION&&mContentListener!=null) {
+                        mContentListener.onContentClick(v, pos);
+                    }
+                }
+            });
+
         }
 
         @Override

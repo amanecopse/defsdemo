@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class GsonObjectSaveManager {
+public class GsonObjectSaveManager {//텍스트파일 실행 이력의 리스트를 직력화하여 sharedPreference에 저장한다
     private static final String TAG = "GsonM";
     private Gson gson;
     public GsonObjectSaveManager() {

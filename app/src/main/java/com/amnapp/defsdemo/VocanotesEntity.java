@@ -16,10 +16,10 @@ import java.util.List;
 
 @Entity(tableName = "vocanotes")
 public class VocanotesEntity {
-    @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     private int _id;
+    @NonNull
     @ColumnInfo(name = "headword")
     private String headWord;
     @ColumnInfo(name = "relatedWord")
