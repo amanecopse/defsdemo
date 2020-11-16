@@ -49,7 +49,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/navi_header"
         app:menu="@menu/navi_menu" />
+<!--      헤더 구현하기 전까지 잠가놓겠음  app:headerLayout="@layout/navi_header"-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

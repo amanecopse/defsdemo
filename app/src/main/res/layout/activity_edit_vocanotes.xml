@@ -98,13 +98,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/text_box_custom"
                             android:orientation="vertical">
 
                             <EditText
                                 android:id="@+id/related_edit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="100dp"
-                                android:background="@drawable/text_box_custom"
                                 android:gravity="top"
                                 android:hint="메모할 내용을 입력하세요." />
                         </LinearLayout>
@@ -129,13 +129,21 @@
                     android:text="뜻"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/meaning_edit"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/text_box_custom"
-                    android:gravity="top"
-                    android:hint="메모할 내용을 입력하세요." />
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/meaning_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="메모할 내용을 입력하세요." />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -153,13 +161,21 @@
                     android:text="예문"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/example_edit"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/text_box_custom"
-                    android:gravity="top"
-                    android:hint="메모할 내용을 입력하세요." />
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/example_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="메모할 내용을 입력하세요." />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -177,13 +193,21 @@
                     android:text="메모"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/memo_edit"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/text_box_custom"
-                    android:gravity="top"
-                    android:hint="메모할 내용을 입력하세요." />
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/memo_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="메모할 내용을 입력하세요." />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

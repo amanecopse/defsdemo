@@ -31,6 +31,13 @@ public interface VocanotesDao {
     @Query("SELECT * FROM vocanotes where _id = :id")
     VocanotesEntity loadVocanotesById(int id);
 
+    @Query("SELECT * FROM vocanotes where headword LIKE :searchWord" +
+                                    " OR relatedWord LIKE :searchWord"+
+                                    " OR meaning LIKE :searchWord"+
+                                    " OR exampleSentence LIKE :searchWord"+
+                                    " OR otherMemo LIKE :searchWord")
+    List<VocanotesEntity> loadVocanotesListBySearchWord(String searchWord);
+
 //    @Query("SELECT * FROM NEWS ORDER BY pubDate DESC")
 //    LiveData<List<VocanotesDto>> loadAllNews();
 //

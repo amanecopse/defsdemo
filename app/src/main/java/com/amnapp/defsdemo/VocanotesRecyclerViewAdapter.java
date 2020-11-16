@@ -15,6 +15,9 @@ public class VocanotesRecyclerViewAdapter extends RecyclerView.Adapter<Vocanotes
 
     public static final String TAG = "VocanotesRVAdapter";
     public static ArrayList<VocanotesEntity> vocaList = new ArrayList<>();
+    public static VocanotesEntity tmpVocanotesEntity;
+    public static Boolean editBackButtonVisible = true;
+
     private OnEditClickListener mEditListener = null ;
     private OnDeleteClickListener mDeleteListener = null ;
     private OnContentClickListener mContentListener = null ;
@@ -53,6 +56,13 @@ public class VocanotesRecyclerViewAdapter extends RecyclerView.Adapter<Vocanotes
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.vocanotes_items, parent, false);
+        if(!editBackButtonVisible){//에딧,취소 버튼이 보이게 될지 판단
+            view.findViewById(R.id.viEdit).setVisibility(View.GONE);
+            view.findViewById(R.id.viDelete).setVisibility(View.GONE);
+        }else{
+            view.findViewById(R.id.viEdit).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.viDelete).setVisibility(View.VISIBLE);
+        }
         return new ViewHolder(view);
     }
 

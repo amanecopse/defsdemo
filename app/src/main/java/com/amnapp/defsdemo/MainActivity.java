@@ -74,15 +74,22 @@ public class MainActivity extends AppCompatActivity {
         public static final String InsertVocanotes = "InsertVocanotes";
         public static final String UpdateVocanotes = "UpdateVocanotes";
         public static final String DeleteVocanotes = "DeleteVocanotes";
+        public static final String SearchVocanotes = "SearchVocanotes";
         VocanotesEntity mVocanotesEntity;
+        String mSearchWord;
 
         public DBThread(String command) {
             this.command = command;
         }
 
-        public DBThread(String command, VocanotesEntity vocanotesEntity) {
+        public DBThread(String command, VocanotesEntity vocanotesEntity) {//추가, 업데이트, 삭제에서 반드시 이쪽 생성자 사용
             this.command = command;
             this.mVocanotesEntity = vocanotesEntity;
+        }
+
+        public DBThread(String command, String searchWord) {//검색에서 반드시 이쪽 생성자 사용
+            this.command = command;
+            this.mSearchWord = searchWord;
         }
 
         @Override
@@ -110,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
                 AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
                 if(VocanotesRecyclerViewAdapter.vocaList!=null){
                     db.vocanotesDao().delete(mVocanotesEntity);
+                }
+            }
+            if(command.equals("SearchVocanotes")){//받은 VocanotesEntity객체들을 DB에서 검색하는 작업
+                mSearchWord = "%"+mSearchWord+"%";
+                AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
+                if(VocanotesRecyclerViewAdapter.vocaList!=null){
+                    VocanotesRecyclerViewAdapter.vocaList = (ArrayList<VocanotesEntity>) db.vocanotesDao().loadVocanotesListBySearchWord(mSearchWord);
+                    //검색 결과를 리스트에 적용한다 일시적인 것이므로 꼭 나중에 전체 DB의 값들을 리스트에 복원할 것
                 }
             }
 

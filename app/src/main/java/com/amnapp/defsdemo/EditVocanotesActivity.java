@@ -37,6 +37,7 @@ public class EditVocanotesActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent!=null){//인텐트가 빈 값이 아님
+            mHeadWord.setText(intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT));//외부에서 커스텀메뉴를 통해 유입된 경우 셀렉트했던 텍스트를 받아 표제어로 넣는다.
             mIndex = intent.getIntExtra("infoIndex",-1);//받은 인덱스가 있는지 확인
             if(mIndex != -1){//인덱스를 구하는 것에 성공
                 VocanotesEntity vocanotesEntity = VocanotesRecyclerViewAdapter.vocaList.get(mIndex);

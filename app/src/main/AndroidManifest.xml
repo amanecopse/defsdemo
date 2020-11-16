@@ -10,14 +10,41 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".VocanotesContentDialogActivity"
-            android:theme="@style/customPopupTheme">
-
+            android:name=".OuterExampleSentenceActivity"
+            android:label="DEFS 예문으로 등록">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".EditVocanotesActivity"
-            android:label="@string/title_activity_edit_vocanotes">
+            android:name=".VocanotesSearchActivity"
+            android:theme="@style/customPopupTheme"></activity>
+        <activity
+            android:name=".OuterMeaningActivity"
+            android:label="DEFS 뜻으로 등록">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".VocanotesContentDialogActivity"
+            android:theme="@style/customPopupTheme" />
+        <activity
+            android:name=".EditVocanotesActivity"
+            android:label="DEFS 표제어로 등록">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
         <activity android:name=".TextReaderActivity">
             <intent-filter>
