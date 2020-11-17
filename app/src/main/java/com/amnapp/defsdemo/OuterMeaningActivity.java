@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class OuterMeaningActivity extends AppCompatActivity {
     TextView mHeadWord;
-    ImageButton mSearchButton;
+    View mSearchButton;
     TextView mOriginMeaning;
     EditText mNewMeaning;
     TextView mBackButton;

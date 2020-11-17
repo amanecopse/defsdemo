@@ -5,6 +5,8 @@
     <dimen name="text_size_small">8sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
     <dimen name="text_size_title">30sp</dimen>
+    <dimen name="text_reader_size">20sp</dimen>
+
 
     <!--
     Because the window insets on round devices are larger than 15dp, this padding only applies

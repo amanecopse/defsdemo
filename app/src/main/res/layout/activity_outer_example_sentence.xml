@@ -21,8 +21,10 @@
 
         <RelativeLayout
 
+            android:id="@+id/oeSearchButton"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="40dp"
+            android:clickable="true">
 
             <TextView
                 android:id="@+id/oeHeadWord"
@@ -35,11 +37,11 @@
                 android:textSize="@dimen/text_size_large" />
 
             <ImageButton
-                android:id="@+id/oeSearchButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:backgroundTint="@android:color/holo_blue_light"
+                android:clickable="false"
                 android:scaleType="center"
                 android:src="@drawable/ic_baseline_search_24"
                 android:text="검색"

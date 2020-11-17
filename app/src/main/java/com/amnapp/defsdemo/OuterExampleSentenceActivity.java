@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class OuterExampleSentenceActivity extends AppCompatActivity {
     TextView mHeadWord;
-    ImageButton mSearchButton;
+    View mSearchButton;
     TextView mOriginExampleSentence;
     EditText mNewExampleSentence;
     TextView mBackButton;

@@ -1,8 +1,14 @@
 package com.amnapp.defsdemo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,14 +24,31 @@ public class EditVocanotesActivity extends AppCompatActivity {
     EditText mMeaning;
     EditText mExampleSentence;
     EditText mOtherMemo;
+    Button mSetWebViewButton;
+    WebView mWebView;
     int mIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadSettingsPreference();
         setContentView(R.layout.activity_edit_vocanotes);
         initEditTexts();
         initButtons();
+    }
+
+    private void loadSettingsPreference() {
+        SharedPreferences pref = getSharedPreferences(SettingsPreferences.PREFERENCE_KEY, Context.MODE_PRIVATE);//sharedpref에 저장된 설정 데이터를 가져온다
+        int readerTextPosition = pref.getInt(SettingsPreferences.READER_TEXT_SIZE_KEY, 2);
+        boolean isDarkTheme = pref.getBoolean(SettingsPreferences.DARK_THEME_KEY, false);
+        int webAddressPosition = pref.getInt(SettingsPreferences.WEB_ADDRESS_KEY,0);
+        SettingsPreferences settingPreferences = new SettingsPreferences(readerTextPosition,isDarkTheme,webAddressPosition);
+        SettingsPreferences.setInstance(settingPreferences);
+        if(settingPreferences.isDarkTheme()){
+            setTheme(R.style.DarkTheme);
+        }else{
+            setTheme(R.style.LightTheme);
+        }
     }
 
     private void initEditTexts() {
@@ -53,6 +76,7 @@ public class EditVocanotesActivity extends AppCompatActivity {
     private void initButtons() {
         Button confirmBt = findViewById(R.id.editorConfirmButton);
         Button backBt = findViewById(R.id.editorBackBitton);
+        mSetWebViewButton = findViewById(R.id.evSetWebButton);
 
         confirmBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +117,32 @@ public class EditVocanotesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        mSetWebViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebView = (WebView) findViewById(R.id.evWebView);
+
+                mWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
+                mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//캐시 만료 오류해결
+                WebSettings webSettings = mWebView.getSettings(); //세부 세팅 등록
+                //webSettings.setJavaScriptEnabled(true); // 웹페이지 자바스클비트 허용 여부
+                webSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
+                webSettings.setJavaScriptCanOpenWindowsAutomatically(false); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
+                webSettings.setLoadWithOverviewMode(true); // 메타태그 허용 여부
+                webSettings.setUseWideViewPort(true); // 화면 사이즈 맞추기 허용 여부
+                webSettings.setSupportZoom(false); // 화면 줌 허용 여부
+                webSettings.setBuiltInZoomControls(false); // 화면 확대 축소 허용 여부
+                webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
+                webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
+                webSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
+                String webAddress = SettingsPreferences.webAddressArray[SettingsPreferences.getInstance().getWebAddressPosition()];
+                String searchWord = mHeadWord.getText().toString();
+                webAddress+=searchWord;
+                mWebView.loadUrl(webAddress);// 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+
             }
         });
     }

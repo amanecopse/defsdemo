@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     static final int EDIT_VOCANOTES = 2;
     private static final String TAG = "mainAT";
     DrawerLayout mDrawerLayout;
-    enum FragmentNames {TEXTFILES,VOCANOTES};//Fab에게 어느 프래그먼트인지 알려줌
+    enum FragmentNames {TEXTFILES,VOCANOTES,SETTINGS};//Fab에게 어느 프래그먼트인지 알려줌
     FragmentNames currentFragment;//현재 프래그먼트가 어느것인지 fab에게 알려줌
     Fragment mFragment = new TextfilesFragment();//현재 프래그먼트
     FloatingActionButton mFab;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadSettingsPreference();//테마, 글자크기등 설정을 불러옴
         setContentView(R.layout.activity_main);
         setFragmentView();
         initDrawer();
@@ -66,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
         loadVocanotes();
 
 
+    }
+
+    private void loadSettingsPreference() {
+        SharedPreferences pref = getSharedPreferences(SettingsPreferences.PREFERENCE_KEY, Context.MODE_PRIVATE);//sharedpref에 저장된 설정 데이터를 가져온다
+        int readerTextPosition = pref.getInt(SettingsPreferences.READER_TEXT_SIZE_KEY, 2);
+        boolean isDarkTheme = pref.getBoolean(SettingsPreferences.DARK_THEME_KEY, false);
+        int webAddressPosition = pref.getInt(SettingsPreferences.WEB_ADDRESS_KEY,0);
+        SettingsPreferences settingPreferences = new SettingsPreferences(readerTextPosition,isDarkTheme,webAddressPosition);
+        SettingsPreferences.setInstance(settingPreferences);
+        if(settingPreferences.isDarkTheme()){
+            setTheme(R.style.DarkTheme);
+        }else{
+            setTheme(R.style.LightTheme);
+        }
     }
 
     public static class DBThread implements Runnable {//DB관련 작업처리 스레드, 생성자가 받은 커맨드에 따라 다른 행동을 한다.
@@ -227,18 +243,24 @@ public class MainActivity extends AppCompatActivity {
 
                 if(id == R.id.textfiles){
                     currentFragment = FragmentNames.TEXTFILES;
+                    findViewById(R.id.fab).setVisibility(View.VISIBLE);//fab복원
                     Toast.makeText(getApplicationContext(), title + ": 읽을 텍스트를 추가하거나 읽은 목록에서 선택", Toast.LENGTH_SHORT).show();
                     mFragment = new TextfilesFragment();
                     setFragmentView();
                 }
                 else if(id == R.id.vocanotes){
                     currentFragment = FragmentNames.VOCANOTES;
+                    findViewById(R.id.fab).setVisibility(View.VISIBLE);//fab복원
                     Toast.makeText(getApplicationContext(), title + ": 사전을 추가 또는 편집하거나 열람", Toast.LENGTH_SHORT).show();
                     mFragment = new VocanotesFragment();//단어장 목록 db에서 불러올때 인텐트를 인자로 보낼것
                     setFragmentView();
                 }
                 else if(id == R.id.settings){
+                    currentFragment = FragmentNames.SETTINGS;
+                    findViewById(R.id.fab).setVisibility(View.GONE);//fab숨김
                     Toast.makeText(getApplicationContext(), title + ": 환경설정 변경", Toast.LENGTH_SHORT).show();
+                    mFragment = new SettingsFragment();
+                    setFragmentView();
                 }
 
                 return true;

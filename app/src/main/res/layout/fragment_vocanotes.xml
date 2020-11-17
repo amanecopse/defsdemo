@@ -4,18 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/VocanotesFragmentTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:text="단어장"
-        android:textColor="#000000"
-        android:textSize="30sp" />
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/VocanotesFragmentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="단어장"
+            android:textColor='?attr/textColor'
+            android:textSize="30sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_toStartOf="@+id/vSearchButtonLinearLayout"
+            android:layout_toEndOf="@+id/VocanotesFragmentTitle"
+            android:background="@android:color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/vSearchWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="검색" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/vSearchButtonLinearLayout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/VocanotesFragmentTitle"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="10dp"
+            android:background="?android:selectableItemBackground"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/vSearchButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:foreground="@drawable/ic_baseline_search_24"
+                app:cardBackgroundColor="@android:color/secondary_text_dark"
+                app:cardCornerRadius="5dp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/VocanotesListView"
@@ -24,7 +64,9 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context=".VocanotesFragment"
-        tools:listitem="@layout/vocanotes_items"></androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/vocanotes_items">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>
 

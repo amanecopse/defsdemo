@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/bgColor"
     android:padding="@dimen/inner_frame_layout_padding" >
 
     <LinearLayout
@@ -37,7 +38,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,6 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="표제어"
+                        android:textColor="?attr/textColor"
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -73,7 +75,8 @@
                             android:id="@+id/headword_edit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="표제어" />
+                            android:hint="표제어"
+                            android:textColor="?attr/metaTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -89,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="파생, 유의, 반의어"
+                        android:textColor="?attr/textColor"
                         android:textStyle="bold" />
 
                     <ScrollView
@@ -106,7 +110,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="100dp"
                                 android:gravity="top"
-                                android:hint="메모할 내용을 입력하세요." />
+                                android:hint="메모할 내용을 입력하세요."
+                                android:textColor="?attr/metaTextColor" />
                         </LinearLayout>
                     </ScrollView>
 
@@ -127,6 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="뜻"
+                    android:textColor="?attr/textColor"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -141,7 +147,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:hint="메모할 내용을 입력하세요." />
+                        android:hint="메모할 내용을 입력하세요."
+                        android:textColor="?attr/metaTextColor" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -159,6 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="예문"
+                    android:textColor="?attr/textColor"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -173,7 +181,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:hint="메모할 내용을 입력하세요." />
+                        android:hint="메모할 내용을 입력하세요."
+                        android:textColor="?attr/metaTextColor" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -191,6 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="메모"
+                    android:textColor="?attr/textColor"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -205,8 +215,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:hint="메모할 내용을 입력하세요." />
+                        android:hint="메모할 내용을 입력하세요."
+                        android:textColor="?attr/metaTextColor" />
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/evSetWebButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="웹사전에 표제어를 검색" />
+
+                <WebView
+                    android:id="@+id/evWebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
