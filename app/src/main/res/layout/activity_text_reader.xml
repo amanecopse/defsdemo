@@ -17,6 +17,7 @@
             android:id="@+id/trEditText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/trSearchButton"
             app:layout_constraintStart_toStartOf="parent"

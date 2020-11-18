@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">defs demo</string>
+    <string name="DEFS예문등록">DEFS에 예문으로 등록</string>
+    <string name="DEFS뜻등록">DEFS에 뜻으로 등록</string>
+    <string name="DEFS표제어등록">DEFS에 표제어로 등록</string>
+
+    <string name="app_name">DEFS</string>
     <string name="title_activity_edit_vocanotes">EditVocanotesActivity</string>
     <!--
     This string is used for square devices and overridden by hello_world in

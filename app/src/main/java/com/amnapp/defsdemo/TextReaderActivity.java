@@ -9,8 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -41,6 +44,29 @@ public class TextReaderActivity extends AppCompatActivity {
         Button searchButton = (Button) findViewById(R.id.trSearchButton);
         mEditText = findViewById(R.id.trEditText);
         mScrollView = findViewById(R.id.text_reader_scroll_view);
+
+        mEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        mEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        mEditText.setOnEditorActionListener( new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((actionId == EditorInfo.IME_ACTION_SEARCH) ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    String criteria = mEditText.getText().toString();
+                    String fullText = mContentTextView.getText().toString();
+                    if (fullText.contains(criteria)) {
+                        int indexOfCriteria = fullText.indexOf(criteria);
+                        int lineNumber = mContentTextView.getLayout().getLineForOffset(indexOfCriteria);
+//                    String highlighted = "<font color='red'>"+criteria+"</font>";
+//                    fullText = fullText.replace(criteria, highlighted);
+//                    mContentTextView.setText(Html.fromHtml(fullText));
+
+                        mScrollView.scrollTo(0, mContentTextView.getLayout().getLineTop(lineNumber));
+                    }
+                }
+                return false;
+            }
+        });
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

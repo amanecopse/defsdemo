@@ -18,7 +18,7 @@ public class SettingsPreferences{
     public static final String WEB_ADDRESS_KEY = "wa";
     //public static String[] readerTextArray = {"최대","크게","보통","작게","최소"};
     public static int[] readerTextSizeArray={40,35,25,20,15};
-    public static String[] webAddressArray = {"https://endic.naver.com/search.nhn?searchOption=all&query=","https://zh.dict.naver.com/#/search?query=","https://ja.dict.naver.com/#/search?query=","https://ko.dict.naver.com/#/search?query=","https://translate.google.com/?hl=ko&sl=auto&tl=ko&text="};
+    public static String[] webAddressArray = {"https://endic.naver.com/search.nhn?searchOption=all&query=","https://zh.dict.naver.com/#/search?query=","https://ja.dict.naver.com/#/search?query=","https://ko.dict.naver.com/#/search?query=","https://dictionary.cambridge.org/ko/%EC%82%AC%EC%A0%84/%EC%98%81%EC%96%B4-%ED%95%9C%EA%B5%AD%EC%96%B4/"};
 
 
     public static SettingsPreferences getInstance() {

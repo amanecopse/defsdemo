@@ -36,6 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="20dp"
+                    android:background="@android:color/white"
                     android:orientation="horizontal">
 
                     <TextView
@@ -49,14 +50,17 @@
                         android:id="@+id/sReaderTextSizeSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:entries="@array/settingsReaderTextSizeArray" />
+                        android:background="@drawable/text_box_custom"
+                        android:dropDownWidth="wrap_content"
+                        android:entries="@array/settingsReaderTextSizeArray"
+                        android:spinnerMode="dropdown" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="20dp"
+                    android:background="@android:color/white"
                     android:orientation="horizontal">
 
                     <TextView
@@ -77,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="20dp"
+                    android:background="@android:color/white"
                     android:orientation="horizontal">
 
                     <TextView
@@ -90,7 +95,7 @@
                         android:id="@+id/sChooseAddressSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/white"
+                        android:background="@drawable/text_box_custom"
                         android:entries="@array/settingsWebAddressArray" />
                 </LinearLayout>
 

@@ -94,7 +94,9 @@ public class EditVocanotesActivity extends AppCompatActivity {
                         VocanotesEntity vocanotesEntity = new VocanotesEntity(headWord, relatedWord, meaning, exampleSentence, otherMemo);//UI에 적힌 값으로 새로운 객체생성
                         VocanotesRecyclerViewAdapter.vocaList.add(0,vocanotesEntity);// 새 객체를 어댑터 속 리스트에 추가
                         MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.InsertVocanotes, vocanotesEntity);// DB에도 추가
-                        new Thread(dbt).start();//DB에 추가하는 스레드 실행
+                        Thread thread = new Thread(dbt);
+                        thread.start();//DB에 추가하는 스레드 실행
+                        while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와서 종료실행
                         finish();
                     }else{//받은 인덱스가 있어 특정 자료를 업뎃하는 경우
                         VocanotesEntity vocanotesEntity = VocanotesRecyclerViewAdapter.vocaList.get(mIndex);
@@ -106,7 +108,9 @@ public class EditVocanotesActivity extends AppCompatActivity {
                         VocanotesRecyclerViewAdapter.vocaList.remove(mIndex);//기존에 리스트에 존재한 객체를 삭제
                         VocanotesRecyclerViewAdapter.vocaList.add(mIndex, vocanotesEntity);//수정한 것으로 대체
                         MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.UpdateVocanotes, vocanotesEntity);// DB에도 업데이트
-                        new Thread(dbt).start();//DB에 추가하는 스레드 실행
+                        Thread thread = new Thread(dbt);
+                        thread.start();//DB에 추가하는 스레드 실행
+                        while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와서 종료실행
                         finish();
 
                     }
@@ -128,7 +132,7 @@ public class EditVocanotesActivity extends AppCompatActivity {
                 mWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
                 mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//캐시 만료 오류해결
                 WebSettings webSettings = mWebView.getSettings(); //세부 세팅 등록
-                //webSettings.setJavaScriptEnabled(true); // 웹페이지 자바스클비트 허용 여부
+                webSettings.setJavaScriptEnabled(true); // 웹페이지 자바스클비트 허용 여부
                 webSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
                 webSettings.setJavaScriptCanOpenWindowsAutomatically(false); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
                 webSettings.setLoadWithOverviewMode(true); // 메타태그 허용 여부
@@ -138,7 +142,11 @@ public class EditVocanotesActivity extends AppCompatActivity {
                 webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
                 webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
                 webSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
-                String webAddress = SettingsPreferences.webAddressArray[SettingsPreferences.getInstance().getWebAddressPosition()];
+                int pos = SettingsPreferences.getInstance().getWebAddressPosition();
+                if(pos==0){
+                    webSettings.setJavaScriptEnabled(false); // 웹페이지 자바스크립트 허용 여부
+                }
+                String webAddress = SettingsPreferences.webAddressArray[pos];
                 String searchWord = mHeadWord.getText().toString();
                 webAddress+=searchWord;
                 mWebView.loadUrl(webAddress);// 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작

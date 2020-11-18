@@ -32,7 +32,8 @@
                 android:id="@+id/vSearchWord"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="검색" />
+                android:hint="검색"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout

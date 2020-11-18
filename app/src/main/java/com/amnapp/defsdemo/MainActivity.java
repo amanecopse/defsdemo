@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class DBThread implements Runnable {//DB관련 작업처리 스레드, 생성자가 받은 커맨드에 따라 다른 행동을 한다.
         String command;
+        public boolean isTaskFinished;//요청한 태스크가 완료되었는지 물어보는 변수
         public static final String LoadVocanotes = "LoadVocanotes";
         public static final String InsertVocanotes = "InsertVocanotes";
         public static final String UpdateVocanotes = "UpdateVocanotes";
@@ -96,16 +97,19 @@ public class MainActivity extends AppCompatActivity {
 
         public DBThread(String command) {
             this.command = command;
+            isTaskFinished = false;
         }
 
         public DBThread(String command, VocanotesEntity vocanotesEntity) {//추가, 업데이트, 삭제에서 반드시 이쪽 생성자 사용
             this.command = command;
             this.mVocanotesEntity = vocanotesEntity;
+            isTaskFinished = false;
         }
 
         public DBThread(String command, String searchWord) {//검색에서 반드시 이쪽 생성자 사용
             this.command = command;
             this.mSearchWord = searchWord;
+            isTaskFinished = false;
         }
 
         @Override
@@ -116,24 +120,28 @@ public class MainActivity extends AppCompatActivity {
                 if(vocaList!=null){
                     VocanotesRecyclerViewAdapter.vocaList = (ArrayList<VocanotesEntity>) vocaList;
                 }
+                isTaskFinished =true;
             }
             if(command.equals("InsertVocanotes")){//받은 VocanotesEntity객체를 DB에 추가하는 작업
                 AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
                 if(VocanotesRecyclerViewAdapter.vocaList!=null){
                     db.vocanotesDao().insert(mVocanotesEntity);
                 }
+                isTaskFinished =true;
             }
             if(command.equals("UpdateVocanotes")){//받은 VocanotesEntity객체를 DB에 업데이트하는 작업
                 AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
                 if(VocanotesRecyclerViewAdapter.vocaList!=null){
                     db.vocanotesDao().update(mVocanotesEntity);
                 }
+                isTaskFinished =true;
             }
             if(command.equals("DeleteVocanotes")){//받은 VocanotesEntity객체를 DB에서 삭제하는 작업
                 AppDatabase db = AppDatabase.getInstance(MainActivity.mContext);
                 if(VocanotesRecyclerViewAdapter.vocaList!=null){
                     db.vocanotesDao().delete(mVocanotesEntity);
                 }
+                isTaskFinished =true;
             }
             if(command.equals("SearchVocanotes")){//받은 VocanotesEntity객체들을 DB에서 검색하는 작업
                 mSearchWord = "%"+mSearchWord+"%";
@@ -142,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     VocanotesRecyclerViewAdapter.vocaList = (ArrayList<VocanotesEntity>) db.vocanotesDao().loadVocanotesListBySearchWord(mSearchWord);
                     //검색 결과를 리스트에 적용한다 일시적인 것이므로 꼭 나중에 전체 DB의 값들을 리스트에 복원할 것
                 }
+                isTaskFinished =true;
             }
 
         }

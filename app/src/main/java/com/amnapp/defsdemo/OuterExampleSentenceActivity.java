@@ -59,7 +59,9 @@ public class OuterExampleSentenceActivity extends AppCompatActivity {
                 String newExampleSentence = mNewExampleSentence.getText().toString();
                 mTmpVocanotesEntity.setExampleSentence(newExampleSentence);//임시객체에 새 뜻 설정
                 MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.UpdateVocanotes, mTmpVocanotesEntity);//DB에 업뎃
-                new Thread(dbt).start();
+                Thread thread = new Thread(dbt);
+                thread.start();//DB에 추가하는 스레드 실행
+                while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와서 종료실행
                 finish();
             }
         });

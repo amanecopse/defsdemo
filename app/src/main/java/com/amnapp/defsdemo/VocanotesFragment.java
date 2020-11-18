@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -72,7 +76,9 @@ public class VocanotesFragment extends Fragment {
                             @Override public void onClick(DialogInterface dialogInterface, int i) {
                                 VocanotesEntity vocanotesEntity = VocanotesRecyclerViewAdapter.vocaList.get(mTmpPosition);
                                 MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.DeleteVocanotes, vocanotesEntity);//DB에서 삭제
-                                new Thread(dbt).start();
+                                Thread thread = new Thread(dbt);
+                                thread.start();//DB에 추가하는 스레드 실행
+                                while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와
                                 VocanotesRecyclerViewAdapter.vocaList.remove(mTmpPosition);//리스트에서 삭제
                                 mVocanotesRecyclerViewAdapter.notifyDataSetChanged();//새로고침
                             }
@@ -98,17 +104,47 @@ public class VocanotesFragment extends Fragment {
         mSearchButton = view.findViewById(R.id.vSearchButton);
         mTextInputEditText = view.findViewById(R.id.vSearchWord);
 
+        mTextInputEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        mTextInputEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        mTextInputEditText.setOnEditorActionListener( new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((actionId == EditorInfo.IME_ACTION_SEARCH) ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    String searchWord = mTextInputEditText.getText().toString();
+                    if(!searchWord.equals("")){//검색어가 있을 경우 검색
+                        MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.SearchVocanotes, searchWord);
+                        Thread thread = new Thread(dbt);
+                        thread.start();//DB에 추가하는 스레드 실행
+                        while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와
+                        mVocanotesRecyclerViewAdapter.notifyDataSetChanged();
+                    }else{// 없다면 리스트를 리로드
+                        MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.LoadVocanotes);
+                        Thread thread = new Thread(dbt);
+                        thread.start();//DB에 추가하는 스레드 실행
+                        while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와
+                        mVocanotesRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                return false;
+            }
+        });
+
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchWord = mTextInputEditText.getText().toString();
                 if(!searchWord.equals("")){//검색어가 있을 경우 검색
                     MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.SearchVocanotes, searchWord);
-                    new Thread(dbt).start();
+                    Thread thread = new Thread(dbt);
+                    thread.start();//DB에 추가하는 스레드 실행
+                    while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와
                     mVocanotesRecyclerViewAdapter.notifyDataSetChanged();
                 }else{// 없다면 리스트를 리로드
                     MainActivity.DBThread dbt = new MainActivity.DBThread(MainActivity.DBThread.LoadVocanotes);
-                    new Thread(dbt).start();
+                    Thread thread = new Thread(dbt);
+                    thread.start();//DB에 추가하는 스레드 실행
+                    while(thread.isAlive()){}//스레드 실행완료되면 반복문 나와
                     mVocanotesRecyclerViewAdapter.notifyDataSetChanged();
                 }
             }

@@ -6,20 +6,21 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_defs"
+        android:label="DEFS"
+        android:roundIcon="@mipmap/ic_defs_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".OuterSearchActivity"
-            android:label="DEFS 사전 검색">
+            android:name=".OuterSearchActivity">
         </activity>
         <activity
             android:name=".OuterExampleSentenceActivity"
-            android:label="DEFS 예문으로 등록">
-            <intent-filter>
+            android:label="@string/DEFS예문등록"
+            android:icon="@drawable/ic_defs">
+            <intent-filter
+                android:label="@string/DEFS예문등록">
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -32,8 +33,10 @@
             android:theme="@style/customPopupTheme" />
         <activity
             android:name=".OuterMeaningActivity"
-            android:label="DEFS 뜻으로 등록">
-            <intent-filter>
+            android:label="@string/DEFS뜻등록"
+            android:icon="@drawable/ic_defs">
+            <intent-filter
+                android:label="@string/DEFS뜻등록">
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -46,8 +49,10 @@
             android:theme="@style/customPopupTheme" />
         <activity
             android:name=".EditVocanotesActivity"
-            android:label="DEFS 표제어로 등록">
-            <intent-filter>
+            android:label="@string/DEFS표제어등록"
+            android:icon="@drawable/ic_defs">
+            <intent-filter
+                android:label="@string/DEFS표제어등록">
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -74,7 +79,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
